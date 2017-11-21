@@ -13,7 +13,7 @@
 </head>
 <body>
 <div class="cd-schedule loading">
-	<form name="myForm" action="/addSchedule" method="post">
+	<form name="myForm" action="${pageContext.request.contextPath}/addSchedule" method="post">
 	<div class="timeline">
 		<ul>
 			<li>

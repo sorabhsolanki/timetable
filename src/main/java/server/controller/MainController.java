@@ -40,7 +40,7 @@ public class MainController extends HttpServlet {
 
     userService.addNewSchedule(addScheduleDto);
 
-    response.sendRedirect("/time");
+    response.sendRedirect(request.getServletContext().getContextPath()+ "/time");
   }
 
   @Override
