@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import server.connection.Conn;
 import server.connection.ConnectionManager;
 import server.dto.AddScheduleDto;
 
@@ -26,11 +25,10 @@ public class ScheduleRepository {
       + " VALUES (?, ?, ?, ?, ?, ?)";
 
   private static final String select_all_schedules = "SELECT * from time_table";
-
-  private final Conn connection;
+  private final ConnectionManager connectionManager;
 
   private ScheduleRepository(ConnectionManager connectionManager) {
-    this.connection = connectionManager.getConnection();
+    this.connectionManager = connectionManager;
   }
 
   public static ScheduleRepository getInstance(){
@@ -40,7 +38,7 @@ public class ScheduleRepository {
   public void addSchedule(AddScheduleDto addScheduleDto){
 
     try {
-      PreparedStatement preparedStmt = connection.getConnection().prepareStatement(insert_schedule);
+      PreparedStatement preparedStmt = connectionManager.getConnection().prepareStatement(insert_schedule);
       preparedStmt.setInt(1, addScheduleDto.getUserId());
       preparedStmt.setString(2, addScheduleDto.getStartTime());
       preparedStmt.setString(3, addScheduleDto.getEndTime());
@@ -65,7 +63,7 @@ public class ScheduleRepository {
 
     List<AddScheduleDto> addScheduleDtos = new ArrayList<>();
     try {
-      PreparedStatement preparedStmt = connection.getConnection().prepareStatement(select_all_schedules);
+      PreparedStatement preparedStmt = connectionManager.getConnection().prepareStatement(select_all_schedules);
       ResultSet resultSet = preparedStmt.executeQuery();
 
       while (resultSet.next()) {

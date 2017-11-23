@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import server.connection.Conn;
 import server.connection.ConnectionManager;
 import server.dto.UserDto;
 
@@ -17,10 +16,10 @@ public class UserRepository {
       ConnectionManager.getInstance(20));
   private static final String select_all_users = "SELECT * FROM user";
 
-  private final Conn connection;
+  private final ConnectionManager connectionManager;
 
   private UserRepository(ConnectionManager connectionManager) {
-    this.connection = connectionManager.getConnection();
+    this.connectionManager = connectionManager;
   }
 
   public static UserRepository getInstance(){
@@ -31,7 +30,7 @@ public class UserRepository {
 
     List<UserDto> userDtos = new ArrayList<>();
     try {
-      PreparedStatement statement = connection.getConnection().prepareStatement(select_all_users);
+      PreparedStatement statement = connectionManager.getConnection().prepareStatement(select_all_users);
       ResultSet resultSet = statement.executeQuery();
 
       while (resultSet.next()) {
