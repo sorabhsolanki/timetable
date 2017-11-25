@@ -4,33 +4,40 @@ package server.dto;
  */
 public class AddScheduleDto {
 
+  private int id;
+
   private String userName;
   private String startTime;
   private String endTime;
   private String title;
   private String startDate;
   private String endDate;
+  private String description;
 
   private int userId;
 
   public AddScheduleDto(String userName, String startTime, String endTime, String title,
-      String startDate, String endDate) {
+      String startDate, String endDate, String description) {
     this.userName = userName;
     this.startTime = startTime;
     this.endTime = endTime;
     this.title = title;
     this.startDate = startDate;
     this.endDate = endDate;
+    this.description = description;
   }
 
-  public AddScheduleDto(int userId, String startTime, String endTime, String title, String startDate,
-      String endDate) {
+  public AddScheduleDto(int id, int userId, String startTime, String endTime, String title,
+      String startDate,
+      String endDate, String description) {
+    this.id = id;
     this.userId = userId;
     this.startTime = startTime;
     this.endTime = endTime;
     this.title = title;
     this.startDate = startDate;
     this.endDate = endDate;
+    this.description = description;
   }
 
   public String getUserName() {
@@ -89,6 +96,22 @@ public class AddScheduleDto {
     this.endDate = endDate;
   }
 
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
   @Override
   public String toString() {
     return "AddScheduleDto{" +
@@ -98,6 +121,7 @@ public class AddScheduleDto {
         ", title='" + title + '\'' +
         ", startDate='" + startDate + '\'' +
         ", endDate='" + endDate + '\'' +
+        ", description='" + description + '\'' +
         '}';
   }
 }

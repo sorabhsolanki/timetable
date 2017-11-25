@@ -32,4 +32,15 @@
 		<url-pattern>/time</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>ajaxServlet</servlet-name>
+		<servlet-class>server.controller.AjaxServlet</servlet-class>
+	</servlet>
+
+
+	<servlet-mapping>
+		<servlet-name>ajaxServlet</servlet-name>
+		<url-pattern>/ajax</url-pattern>
+	</servlet-mapping>
+
 </web-app>

@@ -70,6 +70,10 @@
 			</li>
 
 			<li>
+				<textarea rows="3" cols="50" name="description" placeholder="Description">
+				</textarea>
+			</li>
+			<li>
 				<input type="submit">
 			</li>
 

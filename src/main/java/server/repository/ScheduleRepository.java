@@ -21,10 +21,14 @@ public class ScheduleRepository {
   private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
   private static final String insert_schedule = " INSERT INTO time_table "
-      + "(user_id, start_time, end_time, title, start_date, end_date)"
-      + " VALUES (?, ?, ?, ?, ?, ?)";
+      + "(user_id, start_time, end_time, title, start_date, end_date, description)"
+      + " VALUES (?, ?, ?, ?, ?, ?, ?)";
 
   private static final String select_all_schedules = "SELECT * from time_table";
+
+  private static final String select_user_schedule = "SELECT description from time_table where "
+      + "id = ?";
+
   private final ConnectionManager connectionManager;
 
   private ScheduleRepository(ConnectionManager connectionManager) {
@@ -52,6 +56,8 @@ public class ScheduleRepository {
       LocalDate endDateTime = LocalDate.parse(endDate, formatter);
       preparedStmt.setDate(6, Date.valueOf(endDateTime));
 
+      preparedStmt.setString(7, addScheduleDto.getDescription());
+
       preparedStmt.execute();
 
     } catch (SQLException e) {
@@ -67,15 +73,33 @@ public class ScheduleRepository {
       ResultSet resultSet = preparedStmt.executeQuery();
 
       while (resultSet.next()) {
-        addScheduleDtos.add(new AddScheduleDto(resultSet.getInt("user_id"),
+        addScheduleDtos.add(new AddScheduleDto(resultSet.getInt("id"),
+            resultSet.getInt("user_id"),
             resultSet.getString("start_time"), resultSet.getString("end_time"),
             resultSet.getString("title"), resultSet.getDate("start_date").toString(),
-            resultSet.getDate("end_date").toString()));
+            resultSet.getDate("end_date").toString(), resultSet.getString("description")));
       }
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
 
     return addScheduleDtos;
+  }
+
+  public String getScheduleDescription(int id){
+    String description = "";
+    try {
+      PreparedStatement preparedStmt = connectionManager.getConnection().prepareStatement(select_user_schedule);
+      preparedStmt.setInt(1, id);
+      ResultSet resultSet = preparedStmt.executeQuery();
+      while (resultSet.next()){
+        description = resultSet.getString("description");
+      }
+      return description;
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+
+    return description;
   }
 }

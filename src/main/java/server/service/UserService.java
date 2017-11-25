@@ -12,9 +12,16 @@ import server.repository.ScheduleRepository;
  */
 public class UserService {
 
+  private static final UserService USER_SERVICE = new UserService();
 
   private final UserCache userCache = UserCache.getInstance();
   private final ScheduleRepository scheduleRepository = ScheduleRepository.getInstance();
+
+  private UserService(){}
+
+  public static UserService getInstance(){
+    return USER_SERVICE;
+  }
 
   public void addNewSchedule(AddScheduleDto addScheduleDto){
 
@@ -54,6 +61,10 @@ public class UserService {
     });
 
     return map;
+  }
+
+  public String getDescriptionOfUserWork(int id){
+    return scheduleRepository.getScheduleDescription(id);
   }
 
 }

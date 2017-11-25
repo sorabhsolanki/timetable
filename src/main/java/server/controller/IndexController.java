@@ -14,7 +14,7 @@ import server.service.UserService;
  */
 public class IndexController extends HttpServlet {
 
-  private static final UserService userService = new UserService();
+  private static final UserService userService = UserService.getInstance();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)

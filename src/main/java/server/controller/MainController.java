@@ -18,7 +18,7 @@ import server.service.UserService;
  */
 public class MainController extends HttpServlet {
 
-  private static final UserService userService = new UserService();
+  private static final UserService userService = UserService.getInstance();
 
   @Override
   public void init() {
@@ -36,7 +36,7 @@ public class MainController extends HttpServlet {
     AddScheduleDto addScheduleDto = new AddScheduleDto(request.getParameter("userName"),
         request.getParameter("startTime"), request.getParameter("endTime"),
         request.getParameter("title"), request.getParameter("startDate"),
-        request.getParameter("endDate"));
+        request.getParameter("endDate"), request.getParameter("description"));
 
     userService.addNewSchedule(addScheduleDto);
 

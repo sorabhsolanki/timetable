@@ -10,6 +10,34 @@
 	<link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
 
 	<title>Schedule Template | CodyHouse</title>
+
+	<script src="js/modernizr.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+	<script>
+      if( !window.jQuery ) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');
+	</script>
+	<script src="js/main.js"></script> <!-- Resource jQuery -->
+
+	<script>
+      $(document).ready(function () {
+
+        $("a").click(function(event) {
+          var href = $(this).attr('href');
+          if (typeof href === "undefined"){
+             alert("i got it");
+             return;
+          }
+          if(href != '#0'){
+            $.post("${pageContext.request.contextPath}/ajax?hideTag=" + href, function(data, status){
+              $("#somediv").text(data);
+            });
+          }
+        });
+
+      });
+
+	</script>
+
 </head>
 <body>
 <div class="top-info"><a href = "${pageContext.request.contextPath}/addSchedule"><span>Add Schedule</span></a></div>
@@ -48,10 +76,10 @@
 				<ul>
 			<c:forEach items="${map['akhilesh']}" var="item">
 					<li class="single-event" data-start="${item.startTime}" data-end="${item.endTime}" data-content="event-abs-circuit" data-event="event-1">
-						<a href="#0">
+						<a href="${item.id}">
 							<em class="event-name">${item.title}</em>
-                                                       <b class="event-name">Start: ${item.startDate}</b>
-                                                       <b class="event-name">End: ${item.endDate}</b>
+                            <b class="event-name">Start: ${item.startDate}</b>
+                            <b class="event-name">End: ${item.endDate}</b>
 						</a>
 					</li>
 
@@ -67,7 +95,7 @@
 <c:forEach items="${map['diwakar']}" var="item">
 
 	<li class="single-event" data-start="${item.startTime}" data-end="${item.endTime}" data-content="event-abs-circuit" data-event="event-2">
-		<a href="#0">
+		<a href="${item.id}">
 			<em class="event-name">${item.title}</em>
 			<b class="event-name">Start: ${item.startDate}</b>
 			<b class="event-name">End: ${item.endDate}</b>
@@ -85,7 +113,7 @@
 					<c:forEach items="${map['rachit']}" var="item">
 
 						<li class="single-event" data-start="${item.startTime}" data-end="${item.endTime}" data-content="event-abs-circuit" data-event="event-3">
-							<a href="#0">
+							<a href="${item.id}">
 								<em class="event-name">${item.title}</em>
 								<b class="event-name">Start: ${item.startDate}</b>
 								<b class="event-name">End: ${item.endDate}</b>
@@ -104,7 +132,7 @@
                     <c:forEach items="${map['sorabh']}" var="item">
 
                         <li class="single-event" data-start="${item.startTime}" data-end="${item.endTime}" data-content="event-abs-circuit" data-event="event-4">
-                            <a href="#0">
+                            <a href="${item.id}">
                                 <em class="event-name">${item.title}</em>
                                 <b class="event-name">Start: ${item.startDate}</b>
                                 <b class="event-name">End: ${item.endDate}</b>
@@ -135,7 +163,7 @@
 		</header>
 
 		<div class="body">
-			<div class="event-info"></div>
+			<div class="event-info" id="somediv"></div>
 			<div class="body-bg"></div>
 		</div>
 
@@ -145,11 +173,5 @@
 
 	<div class="cover-layer"></div>
 </div> <!-- .cd-schedule -->
-<script src="js/modernizr.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-<script>
-	if( !window.jQuery ) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');
-</script>
-<script src="js/main.js"></script> <!-- Resource jQuery -->
 </body>
 </html>
