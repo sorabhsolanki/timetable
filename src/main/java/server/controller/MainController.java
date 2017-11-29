@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import server.cache.UserCache;
 import server.dto.AddScheduleDto;
+import server.dto.SearchDto;
 import server.service.UserService;
 
 /**
@@ -33,20 +34,65 @@ public class MainController extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    AddScheduleDto addScheduleDto = new AddScheduleDto(request.getParameter("userName"),
-        request.getParameter("startTime"), request.getParameter("endTime"),
-        request.getParameter("title"), request.getParameter("startDate"),
-        request.getParameter("endDate"), request.getParameter("description"));
+    String requestType = request.getParameter("query");
 
-    userService.addNewSchedule(addScheduleDto);
+    if (requestType.equals("add")) {
 
-    response.sendRedirect(request.getServletContext().getContextPath()+ "/time");
+      AddScheduleDto addScheduleDto = new AddScheduleDto(request.getParameter("userName"),
+          request.getParameter("startTime"), request.getParameter("endTime"),
+          request.getParameter("title"), request.getParameter("startDate"),
+          request.getParameter("endDate"), request.getParameter("description"));
+      userService.addNewSchedule(addScheduleDto);
+
+      response.sendRedirect(request.getServletContext().getContextPath() + "/time");
+
+    } else if (requestType.equals("update")) {
+
+      response.sendRedirect(request.getServletContext().getContextPath() + "/time");
+
+    } else if (requestType.equals("search")) {
+      SearchDto searchDto = new SearchDto(request.getParameter("userName"),
+          request.getParameter("title"));
+      AddScheduleDto addScheduleDto = userService.searchSchedule(searchDto);
+
+      request.setAttribute("userName", addScheduleDto.getUserName());
+
+      List<String> startTimes = getTimes();
+      request.setAttribute("startTimes", startTimes);
+      request.setAttribute("startTimeSelected", addScheduleDto.getStartTime());
+
+      List<String> endTimes = getTimes();
+      request.setAttribute("endTimes", endTimes);
+      request.setAttribute("endTimeSelected", addScheduleDto.getEndTime());
+
+      request.setAttribute("title", addScheduleDto.getTitle());
+
+      request.setAttribute("startDate", addScheduleDto.getStartDate());
+      request.setAttribute("endDate", addScheduleDto.getEndDate());
+
+      request.setAttribute("description", addScheduleDto.getDescription());
+
+      request.getRequestDispatcher("/update_schedule.jsp").forward(request, response);
+    }
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
+    String requestType = request.getParameter("query");
+
+    List<String> userNames = getUserNames();
+    request.setAttribute("userList", userNames);
+
+    if(requestType.equals("add")){
+      request.getRequestDispatcher("/add_schedule.jsp").forward(request, response);
+    }else if(requestType.equals("search")){
+      request.getRequestDispatcher("/search_schedule.jsp").forward(request, response);
+    }
+  }
+
+  private List<String> getUserNames() {
     List<String> userNames = new ArrayList<>();
     Map<Integer, String> userCache = UserCache.getInstance().getUserCache();
 
@@ -56,8 +102,21 @@ public class MainController extends HttpServlet {
     for (Entry<Integer, String> entry : treeMap.entrySet()) {
       userNames.add(entry.getValue());
     }
+    return userNames;
+  }
 
-    request.setAttribute("userList", userNames);
-    request.getRequestDispatcher("/add_schedule.jsp").forward(request, response);
+  public List<String> getTimes() {
+    List<String> times = new ArrayList<>(10);
+    times.add("9:00");
+    times.add("10:00");
+    times.add("11:00");
+    times.add("12:00");
+    times.add("13:00");
+    times.add("14:00");
+    times.add("15:00");
+    times.add("16:00");
+    times.add("17:00");
+    times.add("18:00");
+    return times;
   }
 }

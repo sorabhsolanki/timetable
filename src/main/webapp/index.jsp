@@ -40,7 +40,9 @@
 
 </head>
 <body>
-<div class="top-info"><a href = "${pageContext.request.contextPath}/addSchedule"><span>Add Schedule</span></a></div>
+<div class="top-info"><a href = "${pageContext.request.contextPath}/addSchedule?query=add"><span>Add Schedule</span></a></div>
+<div class="top-info"><a href = "${pageContext.request.contextPath}/addSchedule?query=search"><span>Update Schedule</span></a></div>
+
 <div class="cd-schedule loading">
 	<div class="timeline">
 		<ul>

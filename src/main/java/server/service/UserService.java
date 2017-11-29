@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import server.cache.UserCache;
 import server.dto.AddScheduleDto;
+import server.dto.SearchDto;
 import server.repository.ScheduleRepository;
 
 /**
@@ -65,6 +66,17 @@ public class UserService {
 
   public String getDescriptionOfUserWork(int id){
     return scheduleRepository.getScheduleDescription(id);
+  }
+
+  public AddScheduleDto searchSchedule(SearchDto searchDto){
+
+    if(!userCache.getUserIdMap().containsKey(searchDto.getUserName())){
+      System.out.println("No userName found.");
+      return new AddScheduleDto();
+    }
+    //set the userId
+    searchDto.setUserId(Long.valueOf(userCache.getUserIdMap().get(searchDto.getUserName())));
+    return scheduleRepository.searchSchedule(searchDto);
   }
 
 }

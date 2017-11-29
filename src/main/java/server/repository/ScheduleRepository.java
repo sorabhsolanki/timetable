@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import server.connection.ConnectionManager;
 import server.dto.AddScheduleDto;
+import server.dto.SearchDto;
 
 /**
  */
@@ -26,8 +27,11 @@ public class ScheduleRepository {
 
   private static final String select_all_schedules = "SELECT * from time_table";
 
-  private static final String select_user_schedule = "SELECT description from time_table where "
+  private static final String select_user_description = "SELECT description from time_table where "
       + "id = ?";
+
+  private static final String search_user_schedule = "SELECT * from time_table where "
+      + "user_id = ? and title = ?";
 
   private final ConnectionManager connectionManager;
 
@@ -89,17 +93,44 @@ public class ScheduleRepository {
   public String getScheduleDescription(int id){
     String description = "";
     try {
-      PreparedStatement preparedStmt = connectionManager.getConnection().prepareStatement(select_user_schedule);
+      PreparedStatement preparedStmt = connectionManager.getConnection().prepareStatement(
+          select_user_description);
       preparedStmt.setInt(1, id);
       ResultSet resultSet = preparedStmt.executeQuery();
       while (resultSet.next()){
         description = resultSet.getString("description");
       }
-      return description;
+      return description == null ? "" : description;
     } catch (SQLException e) {
       System.out.println(e.getMessage());
     }
 
     return description;
+  }
+
+  public AddScheduleDto searchSchedule(SearchDto searchDto){
+
+    AddScheduleDto addScheduleDto = new AddScheduleDto();
+    PreparedStatement preparedStmt = null;
+    try {
+      preparedStmt = connectionManager.getConnection().prepareStatement(search_user_schedule);
+      preparedStmt.setLong(1, searchDto.getUserId());
+      preparedStmt.setString(2, searchDto.getTitle());
+      ResultSet resultSet = preparedStmt.executeQuery();
+      while (resultSet.next()) {
+        addScheduleDto.setId(resultSet.getInt("id"));
+        addScheduleDto.setUserId(resultSet.getInt("user_id"));
+        addScheduleDto.setStartTime(resultSet.getString("start_time"));
+        addScheduleDto.setEndTime(resultSet.getString("end_time"));
+        addScheduleDto.setTitle(resultSet.getString("title"));
+        addScheduleDto.setStartDate(resultSet.getDate("start_date").toString());
+        addScheduleDto.setEndDate(resultSet.getDate("end_date").toString());
+        addScheduleDto.setDescription(resultSet.getString("description"));
+      }
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
+
+    return addScheduleDto;
   }
 }

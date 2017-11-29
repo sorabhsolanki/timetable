@@ -18,55 +18,54 @@
 		<ul>
 			<li>
 				User Name:
-				<input type="text" placeholder="Title" name="title" size="40" value="${userName}" readonly>
+				<select name="userName">
+					<c:forEach items="${userList}" var="item">
+						<option value="${item}">${item}</option>
+					</c:forEach>
+				</select>
 			</li>
 
 			<li>
+
 				Start Time:
-				<select name="startTime">
-					<option value="9:00">9:00</option>
-					<option value="10:00">10:00</option>
-					<option value="11:00">11:00</option>
-					<option value="12:00">12:00</option>
-					<option value="13:00">13:00</option>
-					<option value="14:00">14:00</option>
-					<option value="15:00">15:00</option>
-					<option value="16:00">16:00</option>
-					<option value="17:00">17:00</option>
-					<option value="18:00">18:00</option>
+				<select name='startTime'>
+					<option value="${startTimeSelected}" selected>${startTimeSelected}</option>
+					<c:forEach items="${startTimes}" var="role">
+						<c:if test="${role != startTimeSelected}">
+							<option value="${role}">${role}</option>
+						</c:if>
+					</c:forEach>
 				</select>
 			</li>
 
 			<li>
 				End Time:
-				<select name="endTime">
-					<option value="9:00">9:00</option>
-					<option value="10:00">10:00</option>
-					<option value="11:00">11:00</option>
-					<option value="12:00">12:00</option>
-					<option value="13:00">13:00</option>
-					<option value="14:00">14:00</option>
-					<option value="15:00">15:00</option>
-					<option value="16:00">16:00</option>
-					<option value="17:00">17:00</option>
-					<option value="18:00">18:00</option>
+				<select name='endTime'>
+					<option value="${endTimeSelected}" selected>${endTimeSelected}</option>
+					<c:forEach items="${endTimes}" var="role">
+						<c:if test="${role != endTimeSelected}">
+							<option value="${role}">${role}</option>
+						</c:if>
+					</c:forEach>
 				</select>
+
 				Do not select the same time as StartTime
 			</li>
 			<li>
-				<input type="text" placeholder="Title" name="title" size="40">
+				<input type="text" placeholder="Title" name="title" size="40" value="${title}">
 			</li>
 
 			<li>
-				<input type="text" placeholder="start date in DD/MM/YYYY" name="startDate" size="40">
+				<input type="text" placeholder="start date in DD/MM/YYYY" name="startDate" size="40" value="${startDate}">
 			</li>
 
 			<li>
-				<input type="text" placeholder="end date in DD/MM/YYYY" name="endDate" size="40">
+				<input type="text" placeholder="end date in DD/MM/YYYY" name="endDate" size="40" value="${endDate}">
 			</li>
 
 			<li>
 				<textarea rows="3" cols="50" name="description" placeholder="Description">
+					${description}
 				</textarea>
 			</li>
 			<li>

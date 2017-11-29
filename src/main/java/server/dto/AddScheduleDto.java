@@ -16,6 +16,9 @@ public class AddScheduleDto {
 
   private int userId;
 
+  public AddScheduleDto() {
+  }
+
   public AddScheduleDto(String userName, String startTime, String endTime, String title,
       String startDate, String endDate, String description) {
     this.userName = userName;
