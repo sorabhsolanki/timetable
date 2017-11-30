@@ -13,16 +13,12 @@
 </head>
 <body>
 <div class="cd-schedule loading">
-	<form name="myForm" action="${pageContext.request.contextPath}/addSchedule?query=add" method="post">
+	<form name="myForm" action="${pageContext.request.contextPath}/addSchedule?query=update" method="post">
 	<div class="timeline">
 		<ul>
 			<li>
 				User Name:
-				<select name="userName">
-					<c:forEach items="${userList}" var="item">
-						<option value="${item}">${item}</option>
-					</c:forEach>
-				</select>
+				<input type="text" placeholder="User Name" name="userName" size="40" value="${userName}" readonly>
 			</li>
 
 			<li>
@@ -75,7 +71,7 @@
 
 		</ul>
 	</div> <!-- .timeline -->
-
+		<input type="hidden" name="scheduleId" value="${scheduleId}">
 	</form>
 
 </div>

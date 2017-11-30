@@ -38,15 +38,16 @@ public class MainController extends HttpServlet {
 
     if (requestType.equals("add")) {
 
-      AddScheduleDto addScheduleDto = new AddScheduleDto(request.getParameter("userName"),
-          request.getParameter("startTime"), request.getParameter("endTime"),
-          request.getParameter("title"), request.getParameter("startDate"),
-          request.getParameter("endDate"), request.getParameter("description"));
+      AddScheduleDto addScheduleDto = getAddScheduleDto(request);
       userService.addNewSchedule(addScheduleDto);
 
       response.sendRedirect(request.getServletContext().getContextPath() + "/time");
 
     } else if (requestType.equals("update")) {
+
+      AddScheduleDto addScheduleDto = getAddScheduleDto(request);
+      addScheduleDto.setId(Integer.parseInt(request.getParameter("scheduleId")));
+      userService.updateSchedule(addScheduleDto);
 
       response.sendRedirect(request.getServletContext().getContextPath() + "/time");
 
@@ -55,7 +56,8 @@ public class MainController extends HttpServlet {
           request.getParameter("title"));
       AddScheduleDto addScheduleDto = userService.searchSchedule(searchDto);
 
-      request.setAttribute("userName", addScheduleDto.getUserName());
+      request.setAttribute("scheduleId", addScheduleDto.getId());
+      request.setAttribute("userName", request.getParameter("userName"));
 
       List<String> startTimes = getTimes();
       request.setAttribute("startTimes", startTimes);
@@ -105,7 +107,7 @@ public class MainController extends HttpServlet {
     return userNames;
   }
 
-  public List<String> getTimes() {
+  private List<String> getTimes() {
     List<String> times = new ArrayList<>(10);
     times.add("9:00");
     times.add("10:00");
@@ -118,5 +120,12 @@ public class MainController extends HttpServlet {
     times.add("17:00");
     times.add("18:00");
     return times;
+  }
+
+  private AddScheduleDto getAddScheduleDto(HttpServletRequest request) {
+    return new AddScheduleDto(request.getParameter("userName"),
+        request.getParameter("startTime"), request.getParameter("endTime"),
+        request.getParameter("title"), request.getParameter("startDate"),
+        request.getParameter("endDate"), request.getParameter("description"));
   }
 }

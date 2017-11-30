@@ -79,4 +79,21 @@ public class UserService {
     return scheduleRepository.searchSchedule(searchDto);
   }
 
+  public void updateSchedule(AddScheduleDto addScheduleDto){
+
+    if(!userCache.getUserIdMap().containsKey(addScheduleDto.getUserName())){
+      System.out.println("No userName found.");
+      return;
+    }
+
+    if(addScheduleDto.getStartTime().equals(addScheduleDto.getEndTime())){
+      System.out.println("StartTime and endTime can not be same.");
+      return;
+    }
+
+    int userId = userCache.getUserIdMap().get(addScheduleDto.getUserName());
+    addScheduleDto.setUserId(userId);
+
+    scheduleRepository.updateSchedule(addScheduleDto);
+  }
 }

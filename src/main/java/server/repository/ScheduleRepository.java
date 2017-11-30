@@ -21,6 +21,8 @@ public class ScheduleRepository {
 
   private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+  private final DateTimeFormatter updated_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
   private static final String insert_schedule = " INSERT INTO time_table "
       + "(user_id, start_time, end_time, title, start_date, end_date, description)"
       + " VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -32,6 +34,10 @@ public class ScheduleRepository {
 
   private static final String search_user_schedule = "SELECT * from time_table where "
       + "user_id = ? and title = ?";
+
+  private static final String update_schedule = " UPDATE time_table "
+      + " set start_time = ?, end_time = ?, title = ?, start_date = ?, end_date = ?, description = ?"
+      + " where id = ?";
 
   private final ConnectionManager connectionManager;
 
@@ -132,5 +138,31 @@ public class ScheduleRepository {
     }
 
     return addScheduleDto;
+  }
+
+  public void updateSchedule(AddScheduleDto addScheduleDto) {
+    try {
+      PreparedStatement preparedStmt = connectionManager.getConnection().prepareStatement(update_schedule);
+      preparedStmt.setString(1, addScheduleDto.getStartTime());
+      preparedStmt.setString(2, addScheduleDto.getEndTime());
+      preparedStmt.setString(3, addScheduleDto.getTitle());
+
+      String startDate = addScheduleDto.getStartDate();
+      LocalDate dateTime = LocalDate.parse(startDate, updated_formatter);
+      preparedStmt.setDate(4, Date.valueOf(dateTime));
+
+      String endDate = addScheduleDto.getEndDate();
+      LocalDate endDateTime = LocalDate.parse(endDate, updated_formatter);
+      preparedStmt.setDate(5, Date.valueOf(endDateTime));
+
+      preparedStmt.setString(6, addScheduleDto.getDescription());
+
+      preparedStmt.setInt(7, addScheduleDto.getId());
+
+      preparedStmt.execute();
+
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
   }
 }

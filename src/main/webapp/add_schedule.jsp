@@ -18,7 +18,11 @@
 		<ul>
 			<li>
 				User Name:
-				<input type="text" placeholder="Title" name="title" size="40" value="${userName}" readonly>
+				<select name="userName">
+					<c:forEach items="${userList}" var="item">
+						<option value="${item}">${item}</option>
+					</c:forEach>
+				</select>
 			</li>
 
 			<li>
