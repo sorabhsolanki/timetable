@@ -13,18 +13,24 @@
 </head>
 <body>
 <div class="cd-schedule loading">
-	<form name="myForm" action="${pageContext.request.contextPath}/addSchedule?query=sms" method="post">
+	<form name="myForm" action="${pageContext.request.contextPath}/addSchedule?query=delete" method="post">
 	<div class="timeline">
 		<ul>
 			<li>
-				<input type="text" placeholder="message" name="message" size="40">
+				User Name:
+				<select name="userName">
+					<c:forEach items="${userList}" var="item">
+						<option value="${item}">${item}</option>
+					</c:forEach>
+				</select>
 			</li>
 
 			<li>
-				<input type="text" placeholder="phone" name="phone" size="40">
+				<input type="text" placeholder="Title" name="title" size="40">
 			</li>
+
 			<li>
-				<input type="submit">
+				<input type="submit" value="delete">
 			</li>
 
 

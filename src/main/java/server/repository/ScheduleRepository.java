@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import server.connection.ConnectionManager;
 import server.dto.AddScheduleDto;
+import server.dto.DeleteDto;
 import server.dto.SearchDto;
 
 /**
@@ -28,17 +29,20 @@ public class ScheduleRepository {
       + "(user_id, start_time, end_time, title, start_date, end_date, description)"
       + " VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-  private static final String select_all_schedules = "SELECT * from time_table";
+  private static final String select_all_schedules = "SELECT * FROM time_table WHERE enabled = ?";
 
-  private static final String select_user_description = "SELECT description from time_table where "
+  private static final String select_user_description = "SELECT description FROM time_table WHERE "
       + "id = ?";
 
-  private static final String search_user_schedule = "SELECT * from time_table where "
+  private static final String search_user_schedule = "SELECT * FROM time_table WHERE "
+      + "user_id = ? AND title = ?";
+
+  private static final String delete_user_schedule = "UPDATE time_table set enabled = false WHERE "
       + "user_id = ? and title = ?";
 
   private static final String update_schedule = " UPDATE time_table "
-      + " set start_time = ?, end_time = ?, title = ?, start_date = ?, end_date = ?, description = ?"
-      + " where id = ?";
+      + " SET start_time = ?, end_time = ?, title = ?, start_date = ?, end_date = ?, description = ?"
+      + " WHERE id = ?";
 
   private final ConnectionManager connectionManager;
 
@@ -46,11 +50,11 @@ public class ScheduleRepository {
     this.connectionManager = connectionManager;
   }
 
-  public static ScheduleRepository getInstance(){
+  public static ScheduleRepository getInstance() {
     return SCHEDULE_REPOSITORY;
   }
 
-  public void addSchedule(AddScheduleDto addScheduleDto){
+  public void addSchedule(AddScheduleDto addScheduleDto) {
 
     Connection connection = connectionManager.getConnection();
     try {
@@ -74,7 +78,7 @@ public class ScheduleRepository {
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
-    }finally {
+    } finally {
       try {
         connection.close();
       } catch (SQLException e) {
@@ -83,12 +87,13 @@ public class ScheduleRepository {
     }
   }
 
-  public List<AddScheduleDto> getAllSchedules(){
+  public List<AddScheduleDto> getAllSchedules() {
 
     List<AddScheduleDto> addScheduleDtos = new ArrayList<>();
     Connection connection = connectionManager.getConnection();
     try {
       PreparedStatement preparedStmt = connection.prepareStatement(select_all_schedules);
+      preparedStmt.setBoolean(1, true);
       ResultSet resultSet = preparedStmt.executeQuery();
 
       while (resultSet.next()) {
@@ -100,7 +105,7 @@ public class ScheduleRepository {
       }
     } catch (SQLException e) {
       System.out.println(e.getMessage());
-    }finally {
+    } finally {
       try {
         connection.close();
       } catch (SQLException e) {
@@ -111,20 +116,20 @@ public class ScheduleRepository {
     return addScheduleDtos;
   }
 
-  public String getScheduleDescription(int id){
+  public String getScheduleDescription(int id) {
     String description = "";
     Connection connection = connectionManager.getConnection();
     try {
       PreparedStatement preparedStmt = connection.prepareStatement(select_user_description);
       preparedStmt.setInt(1, id);
       ResultSet resultSet = preparedStmt.executeQuery();
-      while (resultSet.next()){
+      while (resultSet.next()) {
         description = resultSet.getString("description");
       }
       return description == null ? "" : description;
     } catch (SQLException e) {
       System.out.println(e.getMessage());
-    }finally {
+    } finally {
       try {
         connection.close();
       } catch (SQLException e) {
@@ -135,7 +140,7 @@ public class ScheduleRepository {
     return description;
   }
 
-  public AddScheduleDto searchSchedule(SearchDto searchDto){
+  public AddScheduleDto searchSchedule(SearchDto searchDto) {
 
     AddScheduleDto addScheduleDto = new AddScheduleDto();
     PreparedStatement preparedStmt = null;
@@ -157,7 +162,7 @@ public class ScheduleRepository {
       }
     } catch (SQLException e) {
       System.out.println(e.getMessage());
-    }finally {
+    } finally {
       try {
         connection.close();
       } catch (SQLException e) {
@@ -192,7 +197,27 @@ public class ScheduleRepository {
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
-    }finally {
+    } finally {
+      try {
+        connection.close();
+      } catch (SQLException e) {
+        System.out.println(e.getMessage());
+      }
+    }
+  }
+
+  public void deleteSchedule(DeleteDto deleteDto) {
+
+    PreparedStatement preparedStmt = null;
+    Connection connection = connectionManager.getConnection();
+    try {
+      preparedStmt = connection.prepareStatement(delete_user_schedule);
+      preparedStmt.setLong(1, deleteDto.getUserId());
+      preparedStmt.setString(2, deleteDto.getTitle());
+      preparedStmt.execute();
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    } finally {
       try {
         connection.close();
       } catch (SQLException e) {

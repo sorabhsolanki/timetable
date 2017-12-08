@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import server.cache.UserCache;
 import server.dto.AddScheduleDto;
+import server.dto.DeleteDto;
 import server.dto.SearchDto;
 import server.service.UserService;
 
@@ -75,6 +76,12 @@ public class MainController extends HttpServlet {
       request.setAttribute("description", addScheduleDto.getDescription());
 
       request.getRequestDispatcher("/update_schedule.jsp").forward(request, response);
+    }else if (requestType.equals("delete")) {
+      DeleteDto deleteDto = new DeleteDto(request.getParameter("userName"),
+          request.getParameter("title"));
+      userService.delete(deleteDto);
+
+      response.sendRedirect(request.getServletContext().getContextPath() + "/time");
     }
   }
 
@@ -91,8 +98,8 @@ public class MainController extends HttpServlet {
       request.getRequestDispatcher("/add_schedule.jsp").forward(request, response);
     }else if(requestType.equals("search")){
       request.getRequestDispatcher("/search_schedule.jsp").forward(request, response);
-    }else if (requestType.equals("sms")) {
-      request.getRequestDispatcher("/sms.jsp").forward(request, response);
+    }else if (requestType.equals("delete")) {
+      request.getRequestDispatcher("/delete_schedule.jsp").forward(request, response);
     }
   }
 

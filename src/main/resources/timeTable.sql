@@ -15,6 +15,7 @@ create table `time_table` (
   `start_date` DATE NOT NULL,
   `end_date` DATE NOT NULL,
   `description` MEDIUMTEXT,
+  `enabled` tinyint(1) NOT NULL DEFAULT TRUE,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY(`id`),
   CONSTRAINT `FK_time_table_to_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
