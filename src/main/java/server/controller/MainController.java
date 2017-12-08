@@ -91,6 +91,8 @@ public class MainController extends HttpServlet {
       request.getRequestDispatcher("/add_schedule.jsp").forward(request, response);
     }else if(requestType.equals("search")){
       request.getRequestDispatcher("/search_schedule.jsp").forward(request, response);
+    }else if (requestType.equals("sms")) {
+      request.getRequestDispatcher("/sms.jsp").forward(request, response);
     }
   }
 

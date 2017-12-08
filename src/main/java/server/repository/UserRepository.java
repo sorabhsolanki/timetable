@@ -1,5 +1,6 @@
 package server.repository;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,9 +29,10 @@ public class UserRepository {
 
   public List<UserDto> getUserDetails() {
 
+    Connection connection = connectionManager.getConnection();
     List<UserDto> userDtos = new ArrayList<>();
     try {
-      PreparedStatement statement = connectionManager.getConnection().prepareStatement(select_all_users);
+      PreparedStatement statement = connection.prepareStatement(select_all_users);
       ResultSet resultSet = statement.executeQuery();
 
       while (resultSet.next()) {
@@ -39,6 +41,12 @@ public class UserRepository {
       }
     } catch (SQLException e) {
       System.out.println(e.getMessage());
+    }finally {
+      try {
+        connection.close();
+      } catch (SQLException e) {
+        System.out.println(e.getMessage());
+      }
     }
 
     return userDtos;

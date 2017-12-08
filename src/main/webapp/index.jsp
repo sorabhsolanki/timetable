@@ -40,6 +40,7 @@
 
 </head>
 <body>
+
 <div class="top-info"><a href = "${pageContext.request.contextPath}/addSchedule?query=add"><span>Add Schedule</span></a></div>
 <div class="top-info"><a href = "${pageContext.request.contextPath}/addSchedule?query=search"><span>Update Schedule</span></a></div>
 
@@ -148,6 +149,18 @@
 			<li class="events-group">
 				<div class="top-info"><span>Meeting</span></div>
 
+				<ul>
+					<c:forEach items="${map['meeting']}" var="item">
+						<li class="single-event" data-start="${item.startTime}" data-end="${item.endTime}" data-content="event-abs-circuit" data-event="event-4">
+							<a href="${item.id}">
+								<em class="event-name">${item.title}</em>
+								<b class="event-name">Start: ${item.startDate}</b>
+								<b class="event-name">End: ${item.endDate}</b>
+							</a>
+						</li>
+
+					</c:forEach>
+				</ul>
 			</li>
 		</ul>
 	</div>

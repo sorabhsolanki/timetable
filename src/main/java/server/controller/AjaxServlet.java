@@ -17,6 +17,11 @@ public class AjaxServlet extends HttpServlet {
       HttpServletResponse response)
       throws ServletException, IOException {
 
+    final String hideTag = request.getParameter("hideTag");
+
+    if(hideTag.contains("addSchedule"))
+      return;
+
     String description = userService
         .getDescriptionOfUserWork(Integer.parseInt(request.getParameter("hideTag")));
 
