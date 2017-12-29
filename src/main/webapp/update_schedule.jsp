@@ -65,6 +65,15 @@
 				</textarea>
 			</li>
 			<li>
+				Status:
+				<select name="workStatus">
+					<option value="${workStatusSelected}" selected>${workStatusSelected}</option>
+					<c:forEach items="${workStatusList}" var="item">
+						<option value="${item}">${item}</option>
+					</c:forEach>
+				</select>
+			</li>
+			<li>
 				<input type="submit">
 			</li>
 

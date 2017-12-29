@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="css/reset.css"> <!-- CSS reset -->
 	<link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
 
-	<title>Schedule Template | CodyHouse</title>
+	<title>Time Table | Score Nation</title>
 
 	<script src="js/modernizr.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
@@ -31,6 +31,9 @@
             $.post("${pageContext.request.contextPath}/ajax?hideTag=" + href, function(data, status){
               $("#somediv").text(data);
             });
+            $.post("${pageContext.request.contextPath}/ajax?hideTag=" + href + "&status=true", function(data, status){
+              $("#statusOfWork").text("Status : " + data);
+            });
           }
         });
 
@@ -43,7 +46,7 @@
 
 <div class="top-info"><a href = "${pageContext.request.contextPath}/addSchedule?query=add"><span>Add Schedule</span></a></div>
 <div class="top-info"><a href = "${pageContext.request.contextPath}/addSchedule?query=search"><span>Update Schedule</span></a></div>
-<div class="top-info"><a href = "${pageContext.request.contextPath}/addSchedule?query=delete"><span>Delete Schedule</span></a></div>
+<div class="top-info"><a href = "${pageContext.request.contextPath}/addSchedule?query=delete"><span>Remove Schedule</span></a></div>
 
 <div class="cd-schedule loading">
 	<div class="timeline">
@@ -173,6 +176,7 @@
 			<div class="content">
 				<span class="event-date"></span>
 				<h3 class="event-name"></h3>
+				<h3 style="color:white;"><b id="statusOfWork"></b></h3>
 			</div>
 
 			<div class="header-bg"></div>

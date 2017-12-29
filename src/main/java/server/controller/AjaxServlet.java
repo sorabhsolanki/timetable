@@ -22,9 +22,15 @@ public class AjaxServlet extends HttpServlet {
     if(hideTag.contains("addSchedule"))
       return;
 
-    String description = userService
-        .getDescriptionOfUserWork(Integer.parseInt(request.getParameter("hideTag")));
-
+    final String status = request.getParameter("status");
+    String description;
+    if(status == null){
+       description = userService
+          .getDescriptionOfUserWork(Integer.parseInt(request.getParameter("hideTag")));
+    }else{
+      description = userService
+          .getStatusOfUserWork(Integer.parseInt(request.getParameter("hideTag")));
+    }
     response.getWriter().write(description);
   }
 

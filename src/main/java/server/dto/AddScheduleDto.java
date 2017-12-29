@@ -13,14 +13,16 @@ public class AddScheduleDto {
   private String startDate;
   private String endDate;
   private String description;
+  private String status;
 
   private int userId;
+  private int statusId;
 
   public AddScheduleDto() {
   }
 
   public AddScheduleDto(String userName, String startTime, String endTime, String title,
-      String startDate, String endDate, String description) {
+      String startDate, String endDate, String description, String status) {
     this.userName = userName;
     this.startTime = startTime;
     this.endTime = endTime;
@@ -28,6 +30,7 @@ public class AddScheduleDto {
     this.startDate = startDate;
     this.endDate = endDate;
     this.description = description;
+    this.status = status;
   }
 
   public AddScheduleDto(int id, int userId, String startTime, String endTime, String title,
@@ -113,6 +116,22 @@ public class AddScheduleDto {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
+  public int getStatusId() {
+    return statusId;
+  }
+
+  public void setStatusId(int statusId) {
+    this.statusId = statusId;
   }
 
   @Override

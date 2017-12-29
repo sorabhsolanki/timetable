@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import server.cache.UserCache;
+import server.cache.WorkStatusCache;
 import server.dto.AddScheduleDto;
 import server.dto.DeleteDto;
 import server.dto.SearchDto;
@@ -25,10 +26,15 @@ public class MainController extends HttpServlet {
   @Override
   public void init() {
     initializeUserCache();
+    initializeWorkStatusCache();
   }
 
   private void initializeUserCache() {
     UserCache.getInstance().initializeCache();
+  }
+
+  private void initializeWorkStatusCache() {
+    WorkStatusCache.getInstance().initializeCache();
   }
 
   @Override
@@ -75,6 +81,11 @@ public class MainController extends HttpServlet {
 
       request.setAttribute("description", addScheduleDto.getDescription());
 
+      List<String> statusList = getStatusList();
+      request.setAttribute("workStatusList", statusList);
+      Map<Integer, String> statusCache = WorkStatusCache.getInstance().getStatusCache();
+      request.setAttribute("workStatusSelected", statusCache.get(addScheduleDto.getStatusId()));
+
       request.getRequestDispatcher("/update_schedule.jsp").forward(request, response);
     }else if (requestType.equals("delete")) {
       DeleteDto deleteDto = new DeleteDto(request.getParameter("userName"),
@@ -94,11 +105,14 @@ public class MainController extends HttpServlet {
     List<String> userNames = getUserNames();
     request.setAttribute("userList", userNames);
 
-    if(requestType.equals("add")){
+    List<String> statusList = getStatusList();
+    request.setAttribute("workStatusList", statusList);
+
+    if (requestType.equals("add")) {
       request.getRequestDispatcher("/add_schedule.jsp").forward(request, response);
-    }else if(requestType.equals("search")){
+    } else if (requestType.equals("search")) {
       request.getRequestDispatcher("/search_schedule.jsp").forward(request, response);
-    }else if (requestType.equals("delete")) {
+    } else if (requestType.equals("delete")) {
       request.getRequestDispatcher("/delete_schedule.jsp").forward(request, response);
     }
   }
@@ -114,6 +128,16 @@ public class MainController extends HttpServlet {
       userNames.add(entry.getValue());
     }
     return userNames;
+  }
+
+  private List<String> getStatusList() {
+    List<String> statusList = new ArrayList<>();
+    Map<Integer, String> statusCache = WorkStatusCache.getInstance().getStatusCache();
+
+    for (Entry<Integer, String> entry : statusCache.entrySet()) {
+      statusList.add(entry.getValue());
+    }
+    return statusList;
   }
 
   private List<String> getTimes() {
@@ -135,6 +159,7 @@ public class MainController extends HttpServlet {
     return new AddScheduleDto(request.getParameter("userName"),
         request.getParameter("startTime"), request.getParameter("endTime"),
         request.getParameter("title"), request.getParameter("startDate"),
-        request.getParameter("endDate"), request.getParameter("description"));
+        request.getParameter("endDate"), request.getParameter("description"),
+        request.getParameter("workStatus"));
   }
 }

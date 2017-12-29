@@ -26,12 +26,15 @@ public class ScheduleRepository {
   private final DateTimeFormatter updated_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
   private static final String insert_schedule = " INSERT INTO time_table "
-      + "(user_id, start_time, end_time, title, start_date, end_date, description)"
-      + " VALUES (?, ?, ?, ?, ?, ?, ?)";
+      + "(user_id, start_time, end_time, title, start_date, end_date, description, status)"
+      + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
   private static final String select_all_schedules = "SELECT * FROM time_table WHERE enabled = ?";
 
   private static final String select_user_description = "SELECT description FROM time_table WHERE "
+      + "id = ?";
+
+  private static final String select_work_status = "SELECT status FROM time_table WHERE "
       + "id = ?";
 
   private static final String search_user_schedule = "SELECT * FROM time_table WHERE "
@@ -41,8 +44,8 @@ public class ScheduleRepository {
       + "user_id = ? and title = ?";
 
   private static final String update_schedule = " UPDATE time_table "
-      + " SET start_time = ?, end_time = ?, title = ?, start_date = ?, end_date = ?, description = ?"
-      + " WHERE id = ?";
+      + " SET start_time = ?, end_time = ?, title = ?, start_date = ?, end_date = ?, description = ?, "
+      + "status = ? WHERE id = ?";
 
   private final ConnectionManager connectionManager;
 
@@ -73,6 +76,8 @@ public class ScheduleRepository {
       preparedStmt.setDate(6, Date.valueOf(endDateTime));
 
       preparedStmt.setString(7, addScheduleDto.getDescription());
+
+      preparedStmt.setInt(8, addScheduleDto.getStatusId());
 
       preparedStmt.execute();
 
@@ -140,6 +145,30 @@ public class ScheduleRepository {
     return description;
   }
 
+  public int getWorkStatus(int id) {
+    int workStatusId = -1;
+    Connection connection = connectionManager.getConnection();
+    try {
+      PreparedStatement preparedStmt = connection.prepareStatement(select_work_status);
+      preparedStmt.setInt(1, id);
+      ResultSet resultSet = preparedStmt.executeQuery();
+      while (resultSet.next()) {
+        workStatusId = resultSet.getInt("status");
+      }
+      return workStatusId;
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    } finally {
+      try {
+        connection.close();
+      } catch (SQLException e) {
+        System.out.println(e.getMessage());
+      }
+    }
+
+    return workStatusId;
+  }
+
   public AddScheduleDto searchSchedule(SearchDto searchDto) {
 
     AddScheduleDto addScheduleDto = new AddScheduleDto();
@@ -159,6 +188,7 @@ public class ScheduleRepository {
         addScheduleDto.setStartDate(resultSet.getDate("start_date").toString());
         addScheduleDto.setEndDate(resultSet.getDate("end_date").toString());
         addScheduleDto.setDescription(resultSet.getString("description"));
+        addScheduleDto.setStatusId(resultSet.getInt("status"));
       }
     } catch (SQLException e) {
       System.out.println(e.getMessage());
@@ -191,7 +221,9 @@ public class ScheduleRepository {
 
       preparedStmt.setString(6, addScheduleDto.getDescription());
 
-      preparedStmt.setInt(7, addScheduleDto.getId());
+      preparedStmt.setInt(7, addScheduleDto.getStatusId());
+
+      preparedStmt.setInt(8, addScheduleDto.getId());
 
       preparedStmt.execute();
 

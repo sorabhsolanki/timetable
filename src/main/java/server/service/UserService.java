@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import server.cache.UserCache;
+import server.cache.WorkStatusCache;
 import server.dto.AddScheduleDto;
 import server.dto.DeleteDto;
 import server.dto.SearchDto;
@@ -17,6 +18,8 @@ public class UserService {
   private static final UserService USER_SERVICE = new UserService();
 
   private final UserCache userCache = UserCache.getInstance();
+  private final WorkStatusCache workStatusCache = WorkStatusCache.getInstance();
+
   private final ScheduleRepository scheduleRepository = ScheduleRepository.getInstance();
 
   private UserService(){}
@@ -39,6 +42,9 @@ public class UserService {
 
     int userId = userCache.getUserIdMap().get(addScheduleDto.getUserName());
     addScheduleDto.setUserId(userId);
+
+    int statusId = workStatusCache.getStatusIdMap().get(addScheduleDto.getStatus());
+    addScheduleDto.setStatusId(statusId);
 
     scheduleRepository.addSchedule(addScheduleDto);
   }
@@ -69,6 +75,11 @@ public class UserService {
     return scheduleRepository.getScheduleDescription(id);
   }
 
+  public String getStatusOfUserWork(int id){
+    int workStatusId = scheduleRepository.getWorkStatus(id);
+    return workStatusId == -1 ? "" : workStatusCache.getStatusCache().get(workStatusId);
+  }
+
   public AddScheduleDto searchSchedule(SearchDto searchDto){
 
     if(!userCache.getUserIdMap().containsKey(searchDto.getUserName())){
@@ -94,6 +105,9 @@ public class UserService {
 
     int userId = userCache.getUserIdMap().get(addScheduleDto.getUserName());
     addScheduleDto.setUserId(userId);
+
+    int statusId = workStatusCache.getStatusIdMap().get(addScheduleDto.getStatus());
+    addScheduleDto.setStatusId(statusId);
 
     scheduleRepository.updateSchedule(addScheduleDto);
   }
