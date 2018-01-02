@@ -41,6 +41,8 @@ public class MainController extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
+    checkAuth(request, response);
+
     String requestType = request.getParameter("query");
 
     if (requestType.equals("add")) {
@@ -48,7 +50,7 @@ public class MainController extends HttpServlet {
       AddScheduleDto addScheduleDto = getAddScheduleDto(request);
       userService.addNewSchedule(addScheduleDto);
 
-      String env = System.getProperty("env") != null ? System.getProperty("env") :
+      String env = System.getProperty("env") != null ? System.getProperty("env") + "/timetable/time" :
           request.getServletContext().getContextPath() + "/time";
 
       response.sendRedirect(env);
@@ -60,7 +62,7 @@ public class MainController extends HttpServlet {
       userService.updateSchedule(addScheduleDto);
 
 
-      String env = System.getProperty("env") != null ? System.getProperty("env") :
+      String env = System.getProperty("env") != null ? System.getProperty("env") + "/timetable/time":
           request.getServletContext().getContextPath() + "/time";
 
       response.sendRedirect(env);
@@ -99,7 +101,7 @@ public class MainController extends HttpServlet {
           request.getParameter("title"));
       userService.delete(deleteDto);
 
-      String env = System.getProperty("env") != null ? System.getProperty("env") :
+      String env = System.getProperty("env") != null ? System.getProperty("env") + "/timetable/time" :
           request.getServletContext().getContextPath() + "/time";
 
       response.sendRedirect(env);
@@ -109,6 +111,8 @@ public class MainController extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
+
+    checkAuth(request, response);
 
     String requestType = request.getParameter("query");
 
@@ -124,6 +128,13 @@ public class MainController extends HttpServlet {
       request.getRequestDispatcher("/search_schedule.jsp").forward(request, response);
     } else if (requestType.equals("delete")) {
       request.getRequestDispatcher("/delete_schedule.jsp").forward(request, response);
+    }
+  }
+
+  private void checkAuth(HttpServletRequest request,
+      HttpServletResponse response) throws ServletException, IOException {
+    if(request.getAttribute("auth") == null || !request.getAttribute("auth").equals("true")){
+      request.getRequestDispatcher("/login.jsp").forward(request, response);
     }
   }
 

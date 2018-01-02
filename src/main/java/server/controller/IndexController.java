@@ -20,9 +20,18 @@ public class IndexController extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
+    checkAuth(request, response);
+
     Map<String, List<AddScheduleDto>> map = userService.getAllSchedules();
     request.setAttribute("map", map);
 
     request.getRequestDispatcher("/index.jsp").forward(request, response);
+  }
+
+  private void checkAuth(HttpServletRequest request,
+      HttpServletResponse response) throws ServletException, IOException {
+    if(request.getAttribute("auth") == null || !request.getAttribute("auth").equals("true")){
+      request.getRequestDispatcher("/login.jsp").forward(request, response);
+    }
   }
 }
