@@ -48,7 +48,10 @@ public class MainController extends HttpServlet {
       AddScheduleDto addScheduleDto = getAddScheduleDto(request);
       userService.addNewSchedule(addScheduleDto);
 
-      response.sendRedirect(request.getServletContext().getContextPath() + "/time");
+      String env = System.getProperty("env") != null ? System.getProperty("env") :
+          request.getServletContext().getContextPath() + "/time";
+
+      response.sendRedirect(env);
 
     } else if (requestType.equals("update")) {
 
@@ -56,7 +59,11 @@ public class MainController extends HttpServlet {
       addScheduleDto.setId(Integer.parseInt(request.getParameter("scheduleId")));
       userService.updateSchedule(addScheduleDto);
 
-      response.sendRedirect(request.getServletContext().getContextPath() + "/time");
+
+      String env = System.getProperty("env") != null ? System.getProperty("env") :
+          request.getServletContext().getContextPath() + "/time";
+
+      response.sendRedirect(env);
 
     } else if (requestType.equals("search")) {
       SearchDto searchDto = new SearchDto(request.getParameter("userName"),
@@ -92,7 +99,10 @@ public class MainController extends HttpServlet {
           request.getParameter("title"));
       userService.delete(deleteDto);
 
-      response.sendRedirect(request.getServletContext().getContextPath() + "/time");
+      String env = System.getProperty("env") != null ? System.getProperty("env") :
+          request.getServletContext().getContextPath() + "/time";
+
+      response.sendRedirect(env);
     }
   }
 
