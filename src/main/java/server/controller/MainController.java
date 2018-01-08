@@ -162,7 +162,7 @@ public class MainController extends HttpServlet {
   }
 
   private List<String> getTimes() {
-    List<String> times = new ArrayList<>(10);
+    List<String> times = new ArrayList<>(16);
     times.add("9:00");
     times.add("10:00");
     times.add("11:00");
@@ -173,6 +173,12 @@ public class MainController extends HttpServlet {
     times.add("16:00");
     times.add("17:00");
     times.add("18:00");
+    times.add("19:00");
+    times.add("20:00");
+    times.add("21:00");
+    times.add("22:00");
+    times.add("23:00");
+    times.add("24:00");
     return times;
   }
 
