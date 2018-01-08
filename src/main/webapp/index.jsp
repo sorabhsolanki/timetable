@@ -29,7 +29,7 @@
           }
           if(href != '#0'){
             $.post("${pageContext.request.contextPath}/ajax?hideTag=" + href, function(data, status){
-              $("#somediv").text(data);
+              $("#somediv").html(data);
             });
             $.post("${pageContext.request.contextPath}/ajax?hideTag=" + href + "&status=true", function(data, status){
               $("#statusOfWork").text("Status : " + data);
