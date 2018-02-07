@@ -107,23 +107,6 @@
 				</ul>
 			</li>
 
-			<li class="events-group">
-				<div class="top-info"><span>Diwakar</span></div>
-
-				<ul>
-<c:forEach items="${map['diwakar']}" var="item">
-
-	<li class="single-event" data-start="${item.startTime}" data-end="${item.endTime}" data-content="event-abs-circuit" data-event="event-2">
-		<a href="${item.id}">
-			<em class="event-name">${item.title}</em>
-			<b class="event-name">Start: ${item.startDate}</b>
-			<b class="event-name">End: ${item.endDate}</b>
-		</a>
-	</li>
-
-</c:forEach>
-				</ul>
-			</li>
 
 			<li class="events-group">
 				<div class="top-info"><span>Rachit</span></div>
@@ -159,6 +142,24 @@
                         </li>
 
                     </c:forEach>
+				</ul>
+			</li>
+
+			<li class="events-group">
+				<div class="top-info"><span>Misc</span></div>
+
+				<ul>
+					<c:forEach items="${map['misc']}" var="item">
+
+						<li class="single-event" data-start="${item.startTime}" data-end="${item.endTime}" data-content="event-abs-circuit" data-event="event-2">
+							<a href="${item.id}">
+								<em class="event-name">${item.title}</em>
+								<b class="event-name">Start: ${item.startDate}</b>
+								<b class="event-name">End: ${item.endDate}</b>
+							</a>
+						</li>
+
+					</c:forEach>
 				</ul>
 			</li>
 

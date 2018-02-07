@@ -32,10 +32,10 @@ create table `work_status` (
 
 
 insert into user(user_name) VALUES ('akhilesh');
-insert into user(user_name) VALUES ('diwakar');
 insert into user(user_name) VALUES ('rachit');
 insert into user(user_name) VALUES ('sorabh');
 insert into user(user_name) VALUES ('meeting');
+insert into user(user_name) VALUES ('misc');
 
 insert into work_status(status) VALUES ('UnAssigned');
 insert into work_status(status) VALUES ('NotYetStarted');
