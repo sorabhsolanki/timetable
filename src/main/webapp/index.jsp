@@ -89,12 +89,12 @@
 	<div class="events">
 		<ul>
 			<li class="events-group">
-				<div class="top-info"><span>Akhilesh</span></div>
+				<div class="top-info"><span>Done</span></div>
 
 
 
 				<ul>
-			<c:forEach items="${map['InProgress']}" var="item">
+			<c:forEach items="${map['Done']}" var="item">
 					<li class="single-event" data-start="${item.startTime}" data-end="${item.endTime}" data-content="event-abs-circuit" data-event="event-1">
 						<a href="${item.id}">
 							<em class="event-name">${item.title}</em>
@@ -110,10 +110,10 @@
 
 
 			<li class="events-group">
-				<div class="top-info"><span>Rachit</span></div>
+				<div class="top-info"><span>InProgress</span></div>
 
 				<ul>
-					<c:forEach items="${map['Done']}" var="item">
+					<c:forEach items="${map['InProgress']}" var="item">
 
 						<li class="single-event" data-start="${item.startTime}" data-end="${item.endTime}" data-content="event-abs-circuit" data-event="event-3">
 							<a href="${item.id}">
