@@ -18,7 +18,7 @@
 		<ul>
 			<li>
 				User Name:
-				<select name="sourceUserName">
+				<select name="userName">
 					<c:forEach items="${userList}" var="item">
 						<option value="${item}">${item}</option>
 					</c:forEach>

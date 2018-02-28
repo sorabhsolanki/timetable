@@ -39,7 +39,7 @@
 			</li>
 
 			<li>
-				<input type="submit" value="delete">
+				<input type="submit" value="move">
 			</li>
 
 

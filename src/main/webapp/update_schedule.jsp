@@ -18,7 +18,7 @@
 		<ul>
 			<li>
 				User Name:
-				<input type="text" placeholder="User Name" name="sourceUserName" size="40" value="${sourceUserName}" readonly>
+				<input type="text" placeholder="User Name" name="userName" size="40" value="${userName}" readonly>
 			</li>
 
 			<li>

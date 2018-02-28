@@ -21,7 +21,7 @@
 			</li>
 
 			<li>
-				<input type="text" placeholder="UserName" name="sourceUserName" size="40">
+				<input type="text" placeholder="UserName" name="userName" size="40">
 			</li>
 
 			<li>

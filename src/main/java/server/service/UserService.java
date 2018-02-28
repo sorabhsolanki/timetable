@@ -131,7 +131,7 @@ public class UserService {
     }
     //set the userId
     moveDto.setSourceUserId(Long.valueOf(userCache.getUserIdMap().get(moveDto.getSourceUserName())));
-    moveDto.setTargetUserId(Long.valueOf(userCache.getUserIdMap().get(moveDto.getTargetUserId())));
+    moveDto.setTargetUserId(Long.valueOf(userCache.getUserIdMap().get(moveDto.getTargetUserName())));
     scheduleRepository.moveSchedule(moveDto);
   }
 }
