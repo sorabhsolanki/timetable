@@ -12,6 +12,7 @@ import java.util.List;
 import server.connection.ConnectionManager;
 import server.dto.AddScheduleDto;
 import server.dto.DeleteDto;
+import server.dto.MoveDto;
 import server.dto.SearchDto;
 
 /**
@@ -46,6 +47,9 @@ public class ScheduleRepository {
   private static final String update_schedule = " UPDATE time_table "
       + " SET start_time = ?, end_time = ?, title = ?, start_date = ?, end_date = ?, description = ?, "
       + "status = ? WHERE id = ?";
+
+  private static final String move_user_schedule = "UPDATE time_table set user_id = ? WHERE "
+      + "user_id = ? and title = ?";
 
   private final ConnectionManager connectionManager;
 
@@ -246,6 +250,26 @@ public class ScheduleRepository {
       preparedStmt = connection.prepareStatement(delete_user_schedule);
       preparedStmt.setLong(1, deleteDto.getUserId());
       preparedStmt.setString(2, deleteDto.getTitle());
+      preparedStmt.execute();
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    } finally {
+      try {
+        connection.close();
+      } catch (SQLException e) {
+        System.out.println(e.getMessage());
+      }
+    }
+  }
+
+  public void moveSchedule(MoveDto moveDto) {
+    PreparedStatement preparedStmt = null;
+    Connection connection = connectionManager.getConnection();
+    try {
+      preparedStmt = connection.prepareStatement(move_user_schedule);
+      preparedStmt.setLong(1, moveDto.getTargetUserId());
+      preparedStmt.setLong(2, moveDto.getSourceUserId());
+      preparedStmt.setString(3, moveDto.getTitle());
       preparedStmt.execute();
     } catch (SQLException e) {
       System.out.println(e.getMessage());

@@ -47,6 +47,7 @@
 <div class="top-info"><a href = "${pageContext.request.contextPath}/addSchedule?query=add"><span>Add Schedule</span></a></div>
 <div class="top-info"><a href = "${pageContext.request.contextPath}/addSchedule?query=search"><span>Update Schedule</span></a></div>
 <div class="top-info"><a href = "${pageContext.request.contextPath}/addSchedule?query=delete"><span>Remove Schedule</span></a></div>
+<div class="top-info"><a href = "${pageContext.request.contextPath}/addSchedule?query=move"><span>Remove Schedule</span></a></div>
 
 <div class="cd-schedule loading">
 	<div class="timeline">
@@ -93,7 +94,7 @@
 
 
 				<ul>
-			<c:forEach items="${map['akhilesh']}" var="item">
+			<c:forEach items="${map['InProgress']}" var="item">
 					<li class="single-event" data-start="${item.startTime}" data-end="${item.endTime}" data-content="event-abs-circuit" data-event="event-1">
 						<a href="${item.id}">
 							<em class="event-name">${item.title}</em>
@@ -112,7 +113,7 @@
 				<div class="top-info"><span>Rachit</span></div>
 
 				<ul>
-					<c:forEach items="${map['rachit']}" var="item">
+					<c:forEach items="${map['Done']}" var="item">
 
 						<li class="single-event" data-start="${item.startTime}" data-end="${item.endTime}" data-content="event-abs-circuit" data-event="event-3">
 							<a href="${item.id}">

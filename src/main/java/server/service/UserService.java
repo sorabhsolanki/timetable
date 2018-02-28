@@ -8,6 +8,7 @@ import server.cache.UserCache;
 import server.cache.WorkStatusCache;
 import server.dto.AddScheduleDto;
 import server.dto.DeleteDto;
+import server.dto.MoveDto;
 import server.dto.SearchDto;
 import server.repository.ScheduleRepository;
 
@@ -120,5 +121,17 @@ public class UserService {
     //set the userId
     deleteDto.setUserId(Long.valueOf(userCache.getUserIdMap().get(deleteDto.getUserName())));
     scheduleRepository.deleteSchedule(deleteDto);
+  }
+
+  public void move(MoveDto moveDto) {
+    if(!userCache.getUserIdMap().containsKey(moveDto.getSourceUserName()) ||
+        !userCache.getUserIdMap().containsKey(moveDto.getTargetUserName())){
+      System.out.println("No userName found.");
+      return;
+    }
+    //set the userId
+    moveDto.setSourceUserId(Long.valueOf(userCache.getUserIdMap().get(moveDto.getSourceUserName())));
+    moveDto.setTargetUserId(Long.valueOf(userCache.getUserIdMap().get(moveDto.getTargetUserId())));
+    scheduleRepository.moveSchedule(moveDto);
   }
 }

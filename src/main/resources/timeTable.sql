@@ -31,8 +31,8 @@ create table `work_status` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-insert into user(user_name) VALUES ('akhilesh');
-insert into user(user_name) VALUES ('rachit');
+insert into user(user_name) VALUES ('Done');
+insert into user(user_name) VALUES ('InProgress');
 insert into user(user_name) VALUES ('sorabh');
 insert into user(user_name) VALUES ('meeting');
 insert into user(user_name) VALUES ('misc');

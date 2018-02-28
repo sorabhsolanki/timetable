@@ -13,11 +13,11 @@
 </head>
 <body>
 <div class="cd-schedule loading">
-	<form name="myForm" action="${pageContext.request.contextPath}/addSchedule?query=search" method="post">
+	<form name="myForm" action="${pageContext.request.contextPath}/addSchedule?query=move" method="post">
 	<div class="timeline">
 		<ul>
 			<li>
-				User Name:
+				Source User Name:
 				<select name="sourceUserName">
 					<c:forEach items="${userList}" var="item">
 						<option value="${item}">${item}</option>
@@ -30,7 +30,16 @@
 			</li>
 
 			<li>
-				<input type="submit" value="search">
+				Target User Name:
+				<select name="targetUserName">
+					<c:forEach items="${userList}" var="item">
+						<option value="${item}">${item}</option>
+					</c:forEach>
+				</select>
+			</li>
+
+			<li>
+				<input type="submit" value="delete">
 			</li>
 
 

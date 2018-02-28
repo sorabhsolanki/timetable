@@ -14,6 +14,7 @@ import server.cache.UserCache;
 import server.cache.WorkStatusCache;
 import server.dto.AddScheduleDto;
 import server.dto.DeleteDto;
+import server.dto.MoveDto;
 import server.dto.SearchDto;
 import server.service.UserService;
 
@@ -105,6 +106,15 @@ public class MainController extends HttpServlet {
           request.getServletContext().getContextPath() + "/time";
 
       response.sendRedirect(env);
+    }else if (requestType.equals("move")) {
+      MoveDto moveDto = new MoveDto(request.getParameter("sourceUserName"),
+          request.getParameter("targetUserName"), request.getParameter("title"));
+      userService.move(moveDto);
+
+      String env = System.getProperty("env") != null ? System.getProperty("env") + "/timetable/time" :
+          request.getServletContext().getContextPath() + "/time";
+
+      response.sendRedirect(env);
     }
   }
 
@@ -128,6 +138,8 @@ public class MainController extends HttpServlet {
       request.getRequestDispatcher("/search_schedule.jsp").forward(request, response);
     } else if (requestType.equals("delete")) {
       request.getRequestDispatcher("/delete_schedule.jsp").forward(request, response);
+    } else if (requestType.equals("move")) {
+      request.getRequestDispatcher("/move_task.jsp").forward(request, response);
     }
   }
 
